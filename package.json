@@ -1,0 +1,16 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "ib": "cd packages/screen-recorder-base && yarn && cd ../../",
+    "iv": "cd packages/screen-recorder-vue && yarn && cd ../../",
+    "ir": "cd packages/screen-recorder-react && yarn && cd ../../",
+    "dev:v": "cd packages/screen-recorder-vue && yarn dev",
+    "dev:r": "cd packages/screen-recorder-react && yarn dev",
+    "build:v": "cd packages/screen-recorder-vue && yarn build",
+    "build:r": "cd packages/screen-recorder-react && yarn build"
+  },
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  }
+}

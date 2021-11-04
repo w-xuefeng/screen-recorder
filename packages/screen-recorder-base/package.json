@@ -1,0 +1,17 @@
+{
+  "name": "screen-recorder-base",
+  "version": "1.0.0",
+  "description": "screen-recorder-base",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "RTC"
+  ],
+  "author": "w-xuefeng",
+  "license": "MIT",
+  "dependencies": {
+    "recordrtc": "^5.6.2"
+  }
+}
