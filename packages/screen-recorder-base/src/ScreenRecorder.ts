@@ -48,7 +48,7 @@ export default class ScreenRecorder {
       const { previewStream } = this.options
       this.recorder = new RecordRTC(mediaStream, {
         type: 'video',
-        mimeType: 'video/mp4',
+        mimeType: 'video/webm;codecs=h264',
         previewStream
       });
       this.recorder.startRecording();
