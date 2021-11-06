@@ -1,9 +1,16 @@
 import RecordRTC from 'recordrtc'
+import fixWebmMetaInfo from 'fix-webm-metainfo'
 
 export interface IScreenRecorderOptions {
   onUnsupported: () => void
+  onRecordStart: () => void
   onRecordEnd: (blobUrl: string, recorder: RecordRTC) => void
-  previewStream?: (mediaStream: MediaStream) => void
+  previewStream?: (mediaStream: MediaStream) => void,
+  onError: (err: unknown) => void
+}
+
+export function safeCallback<ArgsType = any, ReturnType = void>(callback: ((...args: ArgsType[]) => ReturnType) | undefined | null | false, ...args: ArgsType[]) {
+  return typeof callback === 'function' ? callback(...args) : undefined
 }
 
 export default class ScreenRecorder {
@@ -11,17 +18,18 @@ export default class ScreenRecorder {
   recording = false
   recorder: RecordRTC | null = null
   mediaStream: MediaStream | null = null
+  apiSupportState = false
 
   options: IScreenRecorderOptions = {
-    onUnsupported: () => {
-      console.error(`[ScreenRecorder Error] Your browser does NOT support the getDisplayMedia API.`)
-    },
-    onRecordEnd: (blobUrl, recorder) => { }
+    onRecordStart: () => { },
+    onUnsupported: () => console.error(`[ScreenRecorder Error] Your browser does NOT support the getDisplayMedia API.`),
+    onRecordEnd: (blobUrl, recorder) => { },
+    onError: console.error
   }
 
   constructor(options: Partial<IScreenRecorderOptions>) {
     this.mergeOptions(options)
-    this.checkAPISupport() && this.init()
+    this.apiSupportState = this.checkAPISupport()
   }
 
   mergeOptions(options: Partial<IScreenRecorderOptions>) {
@@ -36,52 +44,62 @@ export default class ScreenRecorder {
       !navigator.getDisplayMedia &&
       !navigator.mediaDevices.getDisplayMedia
     ) {
-      typeof this.options.onUnsupported === 'function' &&
-        this.options.onUnsupported()
+      safeCallback(this.options.onUnsupported)
       return false
     }
     return true
   }
 
-  init() {
-    const initRecorder = (mediaStream: MediaStream) => {
-      const { previewStream } = this.options
-      this.recorder = new RecordRTC(mediaStream, {
-        type: 'video',
-        mimeType: 'video/webm;codecs=h264',
-        previewStream
-      });
-      this.recorder.startRecording();
-      this.recording = true
-      this.mediaStream = mediaStream;
+  initRecorder(mediaStream: MediaStream) {
+    const { previewStream, onRecordStart } = this.options
+    this.mediaStream = mediaStream;
+    this.recorder = new RecordRTC(mediaStream, {
+      type: 'video',
+      mimeType: 'video/webm;codecs=h264',
+      previewStream,
+      disableLogs: true
+    });
+    this.recorder.startRecording();
+    this.recording = true
+    safeCallback(onRecordStart)
+  }
+
+  async init() {
+    const { onError } = this.options
+    try {
+      const mediaStream = await this.captureScreen()
+      this.initRecorder(mediaStream)
+    } catch (error) {
+      safeCallback(onError, error)
     }
-    this.captureScreen(initRecorder)
+  }
+
+  startRecording() {
+    this.apiSupportState && this.init()
   }
 
   stopRecording() {
-    this.recorder && this.recorder.stopRecording(this.stopRecordingCallback);
+    this.recorder?.stopRecording(this.stopRecordingCallback);
     this.recording = false
+  }
+
+  stopMediaStream() {
+    this.mediaStream?.getTracks().forEach(tracks => tracks.stop())
   }
 
   async getDisplayMedia(onSuccess: (mediaStream: MediaStream) => void, onError: (reason?: any) => void) {
     const displayMediaStreamConstraints = {
-      atMediaDevices: {
-        video: {
-          displaySurface: 'monitor' as 'monitor',
-          logicalSurface: true,
-          cursor: 'always' as 'always'
-        }
-      },
-      atNavigator: {
-        video: true
+      video: {
+        displaySurface: 'monitor' as 'monitor',
+        logicalSurface: true,
+        cursor: 'always' as 'always'
       }
     }
-
     try {
       const mediaStream = navigator.mediaDevices.getDisplayMedia
-        ? await navigator.mediaDevices.getDisplayMedia(displayMediaStreamConstraints.atMediaDevices)
+        ? await navigator.mediaDevices.getDisplayMedia(displayMediaStreamConstraints)
         : navigator.getDisplayMedia
-          ? await navigator.getDisplayMedia(displayMediaStreamConstraints.atNavigator)
+          ? await navigator.getDisplayMedia(displayMediaStreamConstraints)
           : null
 
       mediaStream
@@ -93,12 +111,13 @@ export default class ScreenRecorder {
     }
   }
 
-  captureScreen(callback: (mediaStream: MediaStream) => void) {
-    const onSuccess = (mediaStream: MediaStream) => {
-      this.addStreamStopListener(mediaStream, () => this.stopRecording());
-      callback(mediaStream)
-    }
-    this.getDisplayMedia(onSuccess, console.error);
+  captureScreen() {
+    return new Promise<MediaStream>((resolve, reject) => {
+      this.getDisplayMedia((mediaStream: MediaStream) => {
+        this.addStreamStopListener(mediaStream, () => this.stopRecording());
+        resolve(mediaStream)
+      }, reject);
+    })
   }
 
   addStreamStopListener(stream: MediaStream, callback: () => void) {
@@ -125,17 +144,20 @@ export default class ScreenRecorder {
     });
   }
 
-  stopRecordingCallback() {
-    if (this.recorder) {
-      typeof this.options.onRecordEnd === 'function' &&
-        this.options.onRecordEnd(URL.createObjectURL(this.recorder.getBlob()), this.recorder)
-      this.recorder.destroy();
-    }
-    this.mediaStream &&
-      typeof this.mediaStream.stop === 'function' &&
-      this.mediaStream.stop();
-    this.recorder = null;
-    this.mediaStream = null
+  stopRecordingCallback = () => {
+    const { onRecordEnd, onError } = this.options
+    const originBlob = this.recorder?.getBlob()
+    originBlob && fixWebmMetaInfo(originBlob)
+      .then(fixedBlob => {
+        this.stopMediaStream()
+        safeCallback<any>(onRecordEnd, URL.createObjectURL(fixedBlob), this.recorder)
+      }).then(() => {
+        this.recorder?.destroy();
+        this.recorder = null;
+        this.mediaStream = null
+      }).catch(e => {
+        safeCallback(onError, e)
+      })
   }
 
   static createSR(options: Partial<IScreenRecorderOptions>) {

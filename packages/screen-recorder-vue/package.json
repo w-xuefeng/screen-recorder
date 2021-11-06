@@ -7,6 +7,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "screen-recorder-base": "file:../screen-recorder-base",
     "vue": "^3.2.16"
   },
   "devDependencies": {

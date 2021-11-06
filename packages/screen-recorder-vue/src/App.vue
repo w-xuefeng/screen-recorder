@@ -1,12 +1,52 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue'
+import { ScreenRecorder, RecordRTC, IScreenRecorderOptions } from 'screen-recorder-base'
+import { reactive } from 'vue';
+
+const state = reactive({
+  error: false,
+  unsupported: false,
+  recording: false,
+  screenRecorder: null as ScreenRecorder | null
+})
+
+const options: IScreenRecorderOptions = {
+  onUnsupported: () => {
+    state.unsupported = true
+    state.recording = false
+    state.error = false
+  },
+  onRecordStart: () => {
+    state.recording = true
+    state.error = false
+  },
+  onError: (err) => {
+    state.error = true
+    state.recording = false
+    console.log('[err]', err)
+  },
+  onRecordEnd: (blobUrl: string, recorder: RecordRTC) => {
+    state.recording = false
+    state.error = false
+    console.log(blobUrl)
+  },
+}
+
+state.screenRecorder = ScreenRecorder.createSR(options)
+
+const start = () => {
+  state.screenRecorder?.startRecording()
+}
+
+const end = () => {
+  state.screenRecorder?.stopRecording()
+}
 </script>
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  <button :disabled="state.recording" @click="start">start</button>
+  <button :disabled="!state.recording" @click="end">end</button>
+  <div v-if="state.unsupported">onUnsupported</div>
+  <div v-if="state.error">error</div>
 </template>
 
 <style>
