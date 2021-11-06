@@ -1,6 +1,6 @@
 {
   "name": "screen-recorder-base",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "screen-recorder-base",
   "main": "index.ts",
   "scripts": {
