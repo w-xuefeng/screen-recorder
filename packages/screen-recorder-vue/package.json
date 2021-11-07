@@ -1,12 +1,15 @@
 {
   "name": "screen-recorder-vue",
   "version": "0.0.0",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview"
   },
   "dependencies": {
+    "@vueuse/core": "^6.8.0",
     "@w-xuefeng/bindkey": "^1.0.1",
     "screen-recorder-base": "file:../screen-recorder-base",
     "vue": "^3.2.16"

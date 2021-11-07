@@ -26,10 +26,19 @@ const recordingEnd = (url: string) => { }
 
 <template>
   <ScreenRecorderVue
+    preview
     short-key="Alt+Shift+R"
     :video-options="videoOptions"
     @recording-end="recordingEnd"
-  />
+  >
+    <template v-slot:start="{ startEvent }">
+      <button @click="startEvent">start</button>
+    </template>
+
+    <template v-slot:end="{ endEvent }">
+      <button @click="endEvent">end</button>
+    </template>
+  </ScreenRecorderVue>
 </template>
 ```
 
@@ -38,6 +47,7 @@ const recordingEnd = (url: string) => { }
 | propsName | required | type | default | desc |
 | - | - | - | - | - |
 | `short-key` | false | string | - | shortcut key for starting, if you set shortcut, `ESC` will be set as the shortcut key to end recording |
+| `preview` | false | boolean | false | show preview |
 | `preview-video-element`| false | HTMLVideoElement | - | a video element for preview |
 | `video-options` | false | MediaTrackConstraints | - | video options |
 
@@ -49,3 +59,10 @@ const recordingEnd = (url: string) => { }
 | `recording-end` | [ `blobUrl`: string, `blob`: Blob ] | recorder end |
 | `recording-unsupport` | [] | recorder API unsupported |
 | `recording-error` | [ `err`: unknown ] | recorder error |
+
+## slots
+
+| slotsName | paramList | desc |
+| - | - | - |
+| `start` | { startEvent } | trigger the event of starting screen recording |
+| `end` | { endEvent } | trigger the event of ending screen recording |
