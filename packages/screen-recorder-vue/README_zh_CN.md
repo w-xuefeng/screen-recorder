@@ -65,5 +65,5 @@ const recordingEnd = (url: string) => { }
 
 | 插槽名称 | 参数列表 | 描述 |
 | - | - | - |
-| `start` | startEvent | 触发开始录屏的事件 |
-| `end` | endEvent | 触发结束录屏的事件 |
+| `start` | { startEvent } | 触发开始录屏的事件 |
+| `end` | { endEvent } | 触发结束录屏的事件 |
