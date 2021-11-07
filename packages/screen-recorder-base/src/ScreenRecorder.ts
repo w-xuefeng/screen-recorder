@@ -3,13 +3,16 @@ import fixWebmMetaInfo from 'fix-webm-metainfo'
 
 export interface IScreenRecorderOptions extends RecordRTC.Options {
   onUnsupported: () => void
-  onRecordStart: () => void
-  onRecordEnd: (blobUrl: string, recorder: RecordRTC) => void
+  onRecordStart: (mediaStream: MediaStream, recorder: RecordRTC) => void
+  onRecordEnd: (blobUrl: string, fixedBlob: Blob, recorder: RecordRTC) => void
   onError: (err: unknown) => void,
   videoOptions?: MediaTrackConstraints
 }
 
-export function safeCallback<ArgsType = any, ReturnType = void>(callback: ((...args: ArgsType[]) => ReturnType) | undefined | null | false, ...args: ArgsType[]) {
+export function safeCallback<
+  ArgsType extends any[] = any[],
+  ReturnType = void
+>(callback: ((...args: ArgsType) => ReturnType) | undefined | null | false, ...args: ArgsType) {
   return typeof callback === 'function' ? callback(...args) : undefined
 }
 
@@ -68,7 +71,7 @@ export default class ScreenRecorder {
     });
     this.recorder.startRecording();
     this.recording = true
-    safeCallback(onRecordStart)
+    safeCallback(onRecordStart, mediaStream, this.recorder)
   }
 
   async init() {
@@ -158,7 +161,7 @@ export default class ScreenRecorder {
     originBlob && fixWebmMetaInfo(originBlob)
       .then(fixedBlob => {
         this.stopMediaStream()
-        safeCallback<any>(onRecordEnd, URL.createObjectURL(fixedBlob), this.recorder)
+        safeCallback<any>(onRecordEnd, URL.createObjectURL(fixedBlob), fixedBlob, this.recorder)
       }).then(() => {
         this.recorder?.destroy();
         this.recorder = null;

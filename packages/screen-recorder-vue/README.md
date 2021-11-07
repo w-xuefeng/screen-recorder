@@ -1,11 +1,51 @@
-# Vue 3 + Typescript + Vite
+# ScreenRecorder for Vue
+A Vue component that can record the screen
 
-This template should help get you started developing with Vue 3 and Typescript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+[简体中文](./README_zh_CN.md) | English
 
-## Recommended IDE Setup
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+## Install
 
-## Type Support For `.vue` Imports in TS
+```bash
+npm install screen-recorder-vue --save
+```
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's `.vue` type support plugin by running `Volar: Switch TS Plugin on/off` from VSCode command palette.
+## Usage
+
+```ts
+<script setup lang="ts">
+import ScreenRecorderVue from 'screen-recorder-vue';
+const videoOptions: MediaTrackConstraints = {
+  width: 1920,
+  height: 1080,
+  frameRate: 60
+}
+
+const recordingEnd = (url: string) => { }
+</script>
+
+<template>
+  <ScreenRecorderVue
+    short-key="Alt+Shift+R"
+    :video-options="videoOptions"
+    @recording-end="recordingEnd"
+  />
+</template>
+```
+
+## props
+
+| propsName | required | type | default | desc |
+| - | - | - | - | - |
+| `short-key` | false | string | - | shortcut key for starting, if you set shortcut, `ESC` will be set as the shortcut key to end recording |
+| `preview-video-element`| false | HTMLVideoElement | - | a video element for preview |
+| `video-options` | false | MediaTrackConstraints | - | video options |
+
+## events
+
+| eventsName | paramList | desc |
+| - | - | - |
+| `recording-start` | [ `mediaStream`: MediaStream ] | recorder start |
+| `recording-end` | [ `blobUrl`: string, `blob`: Blob ] | recorder end |
+| `recording-unsupport` | [] | recorder API unsupported |
+| `recording-error` | [ `err`: unknown ] | recorder error |

@@ -7,6 +7,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@w-xuefeng/bindkey": "^1.0.1",
     "screen-recorder-base": "file:../screen-recorder-base",
     "vue": "^3.2.16"
   },
