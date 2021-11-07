@@ -1,12 +1,12 @@
 import RecordRTC from 'recordrtc'
 import fixWebmMetaInfo from 'fix-webm-metainfo'
 
-export interface IScreenRecorderOptions {
+export interface IScreenRecorderOptions extends RecordRTC.Options {
   onUnsupported: () => void
   onRecordStart: () => void
   onRecordEnd: (blobUrl: string, recorder: RecordRTC) => void
-  previewStream?: (mediaStream: MediaStream) => void,
-  onError: (err: unknown) => void
+  onError: (err: unknown) => void,
+  videoOptions?: MediaTrackConstraints
 }
 
 export function safeCallback<ArgsType = any, ReturnType = void>(callback: ((...args: ArgsType[]) => ReturnType) | undefined | null | false, ...args: ArgsType[]) {
@@ -51,13 +51,20 @@ export default class ScreenRecorder {
   }
 
   initRecorder(mediaStream: MediaStream) {
-    const { previewStream, onRecordStart } = this.options
+    const {
+      onRecordStart,
+      onUnsupported,
+      onRecordEnd,
+      onError,
+      videoOptions,
+      ...otherOptions
+    } = this.options
     this.mediaStream = mediaStream;
     this.recorder = new RecordRTC(mediaStream, {
       type: 'video',
       mimeType: 'video/webm;codecs=h264',
-      previewStream,
-      disableLogs: true
+      disableLogs: true,
+      ...otherOptions
     });
     this.recorder.startRecording();
     this.recording = true
@@ -88,11 +95,12 @@ export default class ScreenRecorder {
   }
 
   async getDisplayMedia(onSuccess: (mediaStream: MediaStream) => void, onError: (reason?: any) => void) {
-    const displayMediaStreamConstraints = {
+    const displayMediaStreamConstraints: DisplayMediaStreamConstraints = {
       video: {
         displaySurface: 'monitor' as 'monitor',
         logicalSurface: true,
-        cursor: 'always' as 'always'
+        cursor: 'always' as 'always',
+        ...this.options.videoOptions
       }
     }
     try {
