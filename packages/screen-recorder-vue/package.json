@@ -1,8 +1,8 @@
 {
   "name": "screen-recorder-vue",
-  "version": "0.0.1",
-  "main": "dist/screen-recorder-vue.umd.js",
-  "module": "dist/screen-recorder-vue.es.js",
+  "version": "0.0.2",
+  "main": "lib/screen-recorder-vue.umd.js",
+  "module": "lib/screen-recorder-vue.es.js",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",

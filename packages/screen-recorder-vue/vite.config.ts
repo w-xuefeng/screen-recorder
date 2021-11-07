@@ -6,6 +6,8 @@ import path from 'path'
 export default defineConfig({
   plugins: [vue()],
   build: {
+    target: 'modules',
+    outDir: 'lib',
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'screen-recorder-vue',

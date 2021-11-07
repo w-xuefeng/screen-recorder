@@ -9,6 +9,9 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "declaration": true,
+    "baseUrl": ".",
+    "declarationDir": "./lib",
     "lib": [
       "esnext",
       "dom"
