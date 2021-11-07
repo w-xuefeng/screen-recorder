@@ -1,10 +1,12 @@
 {
   "name": "screen-recorder-base",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "screen-recorder-base",
-  "main": "index.ts",
+  "main": "lib/index.js",
+  "module": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepublishOnly": "npm run build",
+    "build": "rimraf lib && ./node_modules/.bin/tsc --project tsconfig.json"
   },
   "keywords": [
     "RTC"
@@ -13,9 +15,11 @@
   "license": "MIT",
   "dependencies": {
     "fix-webm-metainfo": "github:w-xuefeng/fix-webm-meta",
-    "recordrtc": "^5.6.2"
+    "recordrtc": "^5.6.2",
+    "@types/recordrtc": "^5.6.8"
   },
   "devDependencies": {
-    "@types/recordrtc": "^5.6.8"
+    "rimraf": "^3.0.2",
+    "typescript": "^4.4.4"
   }
 }

@@ -8,7 +8,10 @@
     "dev:v": "cd packages/screen-recorder-vue && npm run dev",
     "dev:r": "cd packages/screen-recorder-react && npm run dev",
     "build:v": "cd packages/screen-recorder-vue && npm run build",
-    "build:r": "cd packages/screen-recorder-react && npm run build"
+    "build:r": "cd packages/screen-recorder-react && npm run build",
+    "publish:b": "cd packages/screen-recorder-base && npm publish",
+    "publish:v": "cd packages/screen-recorder-vue && npm publish",
+    "publish:r": "cd packages/screen-recorder-react && npm publish"
   },
   "devDependencies": {
     "lerna": "^4.0.0"

@@ -1,20 +1,22 @@
 {
   "name": "screen-recorder-vue",
-  "version": "0.0.0",
-  "main": "src/index.ts",
-  "module": "src/index.ts",
+  "version": "0.0.1",
+  "main": "dist/screen-recorder-vue.umd.js",
+  "module": "dist/screen-recorder-vue.es.js",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@vueuse/core": "^6.8.0",
     "@w-xuefeng/bindkey": "^1.0.1",
-    "screen-recorder-base": "file:../screen-recorder-base",
+    "screen-recorder-base": "^0.0.1",
     "vue": "^3.2.16"
   },
   "devDependencies": {
+    "@types/node": "^16.11.6",
     "@vitejs/plugin-vue": "^1.9.3",
     "typescript": "^4.4.3",
     "vite": "^2.6.4",
