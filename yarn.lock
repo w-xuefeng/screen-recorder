@@ -2612,15 +2612,6 @@ find-up@^5.0.0:
     int64-buffer "^1.0.1"
     ts-ebml "^2.0.2"
 
-"fix-webm-metainfo@github:w-xuefeng/fix-webm-meta":
-  version "1.0.6"
-  uid "8d3bf276510b6df06937444c647111f5c42db2c2"
-  resolved "https://codeload.github.com/w-xuefeng/fix-webm-meta/tar.gz/8d3bf276510b6df06937444c647111f5c42db2c2"
-  dependencies:
-    buffer "^6.0.3"
-    int64-buffer "^1.0.1"
-    ts-ebml "^2.0.2"
-
 follow-redirects@0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-0.0.3.tgz#6ce67a24db1fe13f226c1171a72a7ef2b17b8f65"
@@ -4953,15 +4944,6 @@ scheduler@^0.20.2:
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
-
-screen-recorder-base@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/screen-recorder-base/-/screen-recorder-base-0.0.1.tgz#1d05068116c55d8ba79359c7adfa224ebd419e08"
-  integrity sha512-cILbTl6YAOlCesb694NF3bblHv5qoD8psUwskJaMg+ymLurWdtZ5eaw6uX3ZZiWGzxUxLpV1DNeh24JW3N1P8Q==
-  dependencies:
-    "@types/recordrtc" "^5.6.8"
-    fix-webm-metainfo "github:w-xuefeng/fix-webm-meta"
-    recordrtc "^5.6.2"
 
 "semver@2 || 3 || 4 || 5", semver@^5.6.0, semver@^5.7.1:
   version "5.7.1"
