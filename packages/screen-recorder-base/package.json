@@ -3,7 +3,8 @@
   "version": "0.0.3",
   "description": "screen-recorder-base",
   "main": "lib/index.js",
-  "module": "src/index.ts",
+  "module": "lib/index.js",
+  "types": "src/index.ts",
   "scripts": {
     "prepublishOnly": "npm run build",
     "build": "rimraf lib && ./node_modules/.bin/tsc --project tsconfig.json"
