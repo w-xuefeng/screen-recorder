@@ -1,8 +1,7 @@
 {
   "name": "screen-recorder-vue",
   "version": "0.0.4",
-  "main": "lib/screen-recorder-vue.umd.js",
-  "module": "lib/screen-recorder-vue.es.js",
+  "module": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
     "dev": "vite",

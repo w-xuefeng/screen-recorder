@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import ScreenRecorderVue from "./components/ScreenRecorder.vue";
+import ScreenRecorderVue from "screen-recorder-vue";
 
 const recording = ref(false);
 
