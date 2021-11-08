@@ -12,7 +12,7 @@ npm install screen-recorder-vue --save
 
 ## 使用
 
-```ts
+```vue
 <script setup lang="ts">
 import { ref } from "vue";
 import ScreenRecorderVue from "screen-recorder-vue";
@@ -39,7 +39,14 @@ const recordingEnd = (url: string) => {
 
 <template>
   <h1>1. Simple use</h1>
-  <ScreenRecorderVue preview @recording-end="recordingEnd" />
+  <ScreenRecorderVue
+    preview
+    @recording-end="recordingEnd"
+    start-btn-text="🛫 开始"
+    start-btn-style="color: #48bfa7"
+    end-btn-text="🛑 结束"
+    end-btn-style="color: red;"
+  />
 
   <hr style="margin: 50px 0" />
 
@@ -57,6 +64,12 @@ const recordingEnd = (url: string) => {
     <template v-slot:end="{ endEvent }">
       <button v-if="recording" @click="endEvent">结束录屏</button>
     </template>
+
+    <template v-slot:preview="{ mediaStream }">
+      <div>
+        <video muted autoplay width="500" :srcObject="mediaStream"></video>
+      </div>
+    </template>
   </ScreenRecorderVue>
 </template>
 <style scoped>
@@ -73,8 +86,11 @@ button {
 | - | - | - | - | - |
 | `short-key` | false | string | - | 开始录屏的快捷键，如果不为空，则自动将 `ESC` 设为结束录制的快捷键 |
 | `preview` | false | boolean | false | 显示预览 |
-| `preview-video-element`| false | HTMLVideoElement | - | 自定义预览的 Video 元素 |
 | `video-options` | false | MediaTrackConstraints | - | 视频选项设置 |
+| `start-btn-text` | false | string | `开始录屏` | 开始按钮的文案 |
+| `start-btn-style` | false | string | - | 开始按钮的样式 |
+| `end-btn-text` | false | string | `结束录屏` | 结束按钮的文案 |
+| `end-btn-style` | false | string | - | 结束按钮的样式 |
 
 ## events
 
@@ -91,3 +107,4 @@ button {
 | - | - | - |
 | `start` | { startEvent } | 触发开始录屏的事件 |
 | `end` | { endEvent } | 触发结束录屏的事件 |
+| `preview` | { mediaStream } | 自定义 video 预览视图 |

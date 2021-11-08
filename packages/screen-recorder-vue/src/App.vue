@@ -24,7 +24,14 @@ const recordingEnd = (url: string) => {
 
 <template>
   <h1>1. Simple use</h1>
-  <ScreenRecorderVue preview @recording-end="recordingEnd" />
+  <ScreenRecorderVue
+    preview
+    @recording-end="recordingEnd"
+    start-btn-text="🛫 开始"
+    start-btn-style="color: #48bfa7"
+    end-btn-text="🛑 结束"
+    end-btn-style="color: red;"
+  />
 
   <hr style="margin: 50px 0" />
 
@@ -41,6 +48,12 @@ const recordingEnd = (url: string) => {
 
     <template v-slot:end="{ endEvent }">
       <button v-if="recording" @click="endEvent">结束录屏</button>
+    </template>
+
+    <template v-slot:preview="{ mediaStream }">
+      <div>
+        <video muted autoplay width="500" :srcObject="mediaStream"></video>
+      </div>
     </template>
   </ScreenRecorderVue>
 </template>

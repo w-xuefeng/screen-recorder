@@ -12,7 +12,7 @@ npm install screen-recorder-vue --save
 
 ## Usage
 
-```ts
+```vue
 <script setup lang="ts">
 import { ref } from "vue";
 import ScreenRecorderVue from "screen-recorder-vue";
@@ -39,7 +39,14 @@ const recordingEnd = (url: string) => {
 
 <template>
   <h1>1. Simple use</h1>
-  <ScreenRecorderVue preview @recording-end="recordingEnd" />
+  <ScreenRecorderVue
+    preview
+    @recording-end="recordingEnd"
+    start-btn-text="🛫 开始"
+    start-btn-style="color: #48bfa7"
+    end-btn-text="🛑 结束"
+    end-btn-style="color: red;"
+  />
 
   <hr style="margin: 50px 0" />
 
@@ -57,6 +64,12 @@ const recordingEnd = (url: string) => {
     <template v-slot:end="{ endEvent }">
       <button v-if="recording" @click="endEvent">结束录屏</button>
     </template>
+
+    <template v-slot:preview="{ mediaStream }">
+      <div>
+        <video muted autoplay width="500" :srcObject="mediaStream"></video>
+      </div>
+    </template>
   </ScreenRecorderVue>
 </template>
 <style scoped>
@@ -65,7 +78,6 @@ button {
   margin: 16px;
 }
 </style>
-
 ```
 
 ## props
@@ -74,8 +86,11 @@ button {
 | - | - | - | - | - |
 | `short-key` | false | string | - | shortcut key for starting, if you set shortcut, `ESC` will be set as the shortcut key to end recording |
 | `preview` | false | boolean | false | show preview |
-| `preview-video-element`| false | HTMLVideoElement | - | a video element for preview |
 | `video-options` | false | MediaTrackConstraints | - | video options |
+| `start-btn-text` | false | string | `开始录屏` | the text for start-button |
+| `start-btn-style` | false | string | - | the style for start-button |
+| `end-btn-text` | false | string | `结束录屏` | the text for end-button |
+| `end-btn-style` | false | string | - | the style for end-button |
 
 ## events
 
@@ -92,3 +107,4 @@ button {
 | - | - | - |
 | `start` | { startEvent } | trigger the event of starting screen recording |
 | `end` | { endEvent } | trigger the event of ending screen recording |
+| `preview` | { mediaStream } | customize video preview |
