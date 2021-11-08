@@ -13,10 +13,10 @@
     "build:b": "lerna run build --scope screen-recorder-base",
     "build:v": "lerna run build --scope screen-recorder-vue",
     "build:r": "lerna run build --scope screen-recorder-react",
-    "publish": "lerna publish",
-    "publish:b": "cd packages/screen-recorder-base && npm publish",
-    "publish:v": "cd packages/screen-recorder-vue && npm publish",
-    "publish:r": "cd packages/screen-recorder-react && npm publish"
+    "pub:b": "cd packages/screen-recorder-base && npm publish",
+    "pub:v": "cd packages/screen-recorder-vue && npm publish",
+    "pub:r": "cd packages/screen-recorder-react && npm publish",
+    "pub": "lerna publish"
   },
   "devDependencies": {
     "lerna": "^4.0.0"
