@@ -118,7 +118,7 @@ const defaultBtnStyle = `
     @click="start"
     :style="`${defaultBtnStyle}${startBtnStyle}`"
   >{{ startBtnText || "开始录屏" }}</button>
-  <slot name="start" v-else-if="!state.recording" :startEvent="start"></slot>
+  <slot name="start" v-else-if="!state.recording" :startEvent="start" :endEvent="end"></slot>
 
   <button
     v-if="notSlotEnd && state.recording"
