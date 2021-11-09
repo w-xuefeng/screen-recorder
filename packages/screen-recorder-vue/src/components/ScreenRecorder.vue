@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ScreenRecorder, IScreenRecorderOptions } from "screen-recorder-base";
-import bindkey from "@w-xuefeng/bindkey";
-import { useDraggable } from "@vueuse/core";
-import { ref, reactive, useSlots } from "vue";
+import { ScreenRecorder, IScreenRecorderOptions } from 'screen-recorder-base';
+import bindkey from '@w-xuefeng/bindkey';
+import { useDraggable } from '@vueuse/core';
+import { ref, reactive, useSlots } from 'vue';
 
 const props = defineProps<{
   shortKey?: string;
@@ -15,10 +15,10 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits([
-  "recording-start",
-  "recording-end",
-  "recording-unsupport",
-  "recording-error",
+  'recording-start',
+  'recording-end',
+  'recording-unsupport',
+  'recording-error',
 ]);
 
 const notSlotStart = ref(!!!useSlots().start);
@@ -51,23 +51,23 @@ const options: IScreenRecorderOptions = {
     state.unsupported = true;
     state.recording = false;
     state.error = false;
-    emit("recording-unsupport");
+    emit('recording-unsupport');
   },
   onRecordStart: (mediaStream: MediaStream) => {
     state.recording = true;
     state.error = false;
     initPreview(mediaStream);
-    emit("recording-start", mediaStream);
+    emit('recording-start', mediaStream);
   },
   onError: (err) => {
     state.error = true;
     state.recording = false;
-    emit("recording-error", err);
+    emit('recording-error', err);
   },
   onRecordEnd: (blobUrl: string, fixedBlob: Blob) => {
     state.recording = false;
     state.error = false;
-    emit("recording-end", blobUrl, fixedBlob);
+    emit('recording-end', blobUrl, fixedBlob);
   },
   timeSlice: 1000,
   videoOptions: props.videoOptions,
@@ -83,9 +83,9 @@ const end = () => {
   state.screenRecorder?.stopRecording();
 };
 
-if (props.shortKey && props.shortKey.toUpperCase() !== "ESC") {
+if (props.shortKey && props.shortKey.toUpperCase() !== 'ESC') {
   bindkey.add(props.shortKey, start);
-  bindkey.add("ESC", end);
+  bindkey.add('ESC', end);
 }
 
 const defaultBtnStyle = `
@@ -117,18 +117,14 @@ const defaultBtnStyle = `
     v-if="notSlotStart && !state.recording"
     @click="start"
     :style="`${defaultBtnStyle}${startBtnStyle}`"
-  >
-    {{ startBtnText || "开始录屏" }}
-  </button>
+  >{{ startBtnText || "开始录屏" }}</button>
   <slot name="start" v-else-if="!state.recording" :startEvent="start"></slot>
 
   <button
     v-if="notSlotEnd && state.recording"
     @click="end"
     :style="`${defaultBtnStyle}${endBtnStyle}`"
-  >
-    {{ endBtnText || "停止录屏" }}
-  </button>
+  >{{ endBtnText || "停止录屏" }}</button>
   <slot name="end" v-else-if="state.recording" :endEvent="end"></slot>
 
   <video
