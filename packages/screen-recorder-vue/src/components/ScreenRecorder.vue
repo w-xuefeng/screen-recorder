@@ -99,7 +99,6 @@ const defaultBtnStyle = `
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   user-select: none;
   border: 0 solid transparent;
   border-radius: 2px;
@@ -130,7 +129,6 @@ const defaultBtnStyle = `
   <video
     v-if="preview && notSlotPreview"
     v-show="state.recording"
-    class="previewRef"
     ref="previewRef"
     muted
     autoplay
