@@ -19,6 +19,6 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "node_modules/screen-recorder-base/src/env.d.ts"
+    "../../node_modules/screen-recorder-base/src/env.d.ts"
   ]
 }
