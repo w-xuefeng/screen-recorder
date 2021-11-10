@@ -12,18 +12,96 @@ npm install screen-recorder-vue --save
 
 ## 使用
 
+- 1 . 简单使用
+
 ```vue
 <script setup lang="ts">
-import { ref } from "vue";
 import ScreenRecorderVue from "screen-recorder-vue";
 
-const recording = ref(false);
+// 你的其他逻辑代码...
+</script>
+
+<template>
+  <!-- 你的其他组件... -->
+  <ScreenRecorderVue />
+</template>
+```
+
+- 2 . 启用预览并且自定义一些属性信息
+
+```vue
+<script setup lang="ts">
+import ScreenRecorderVue from "screen-recorder-vue";
 
 const videoOptions: MediaTrackConstraints = {
   width: 1920,
   height: 1080,
   frameRate: 60,
 };
+
+// 你的其它逻辑代码...
+
+</script>
+
+<template>
+  <!-- 你的其他组件... -->
+  <ScreenRecorderVue
+    preview
+    start-btn-text="🛫 开始"
+    start-btn-style="color: #48bfa7"
+    end-btn-text="🛑 结束"
+    end-btn-style="color: red;"
+    :video-options="videoOptions"
+  />
+</template>
+```
+
+- 3 . 监听事件回调
+
+```vue
+<script setup lang="ts">
+import ScreenRecorderVue from "screen-recorder-vue";
+
+const onStart = (mediaStream: MediaStream) => {
+  /** 你的逻辑代码 **/
+}
+
+const onError = (err: unknown) => {
+  /** 你的逻辑代码 **/
+}
+
+const onUnsupport = () => {
+  /** 你的逻辑代码 **/
+}
+
+const onEnd = (blobUrl: string, blob: Blob) => {
+  /** 你的逻辑代码 **/
+}
+
+// 你的其他逻辑代码...
+
+</script>
+
+<template>
+  <!-- 你的其他组件... -->
+  <ScreenRecorderVue
+    preview
+    @recording-start="onStart"
+    @recording-end="onEnd"
+    @recording-unsupport="onUnsupport"
+    @recording-error="onError"
+  />
+</template>
+```
+
+- 4 . 自定义视图插槽
+
+```vue
+<script setup lang="ts">
+import { ref } from "vue";
+import ScreenRecorderVue from "screen-recorder-vue";
+
+const recording = ref(false);
 
 const start = (startEvent: Function) => {
   startEvent();
@@ -35,50 +113,34 @@ const recordingEnd = (url: string) => {
   console.log(url);
   // to do sth for url
 };
+
+// 你的其他逻辑代码...
+
 </script>
 
 <template>
-  <h1>1. Simple use</h1>
-  <ScreenRecorderVue
-    preview
-    @recording-end="recordingEnd"
-    start-btn-text="🛫 开始"
-    start-btn-style="color: #48bfa7"
-    end-btn-text="🛑 结束"
-    end-btn-style="color: red;"
-  />
-
-  <hr style="margin: 50px 0" />
-
-  <h1>2. Custom slots use</h1>
-  <ScreenRecorderVue
-    preview
-    short-key="Alt+Shift+R"
-    :video-options="videoOptions"
-    @recording-end="recordingEnd"
-  >
+  <!-- 你的其他逻辑组件... -->
+  <ScreenRecorderVue preview @recording-end="recordingEnd">
     <template v-slot:start="{ startEvent }">
-      <button v-if="!recording" @click="start(startEvent)">开始录屏</button>
+      <!-- 你的自定义视图... -->
+      <button v-if="!recording" @click="start(startEvent)">start</button>
     </template>
 
     <template v-slot:end="{ endEvent }">
-      <button v-if="recording" @click="endEvent">结束录屏</button>
+      <!-- 你的自定义视图... -->
+      <button v-if="recording" @click="endEvent">end</button>
     </template>
 
     <template v-slot:preview="{ mediaStream }">
+      <!-- 你的自定义视图... -->
       <div>
         <video muted autoplay width="500" :srcObject="mediaStream"></video>
       </div>
     </template>
   </ScreenRecorderVue>
 </template>
-<style scoped>
-button {
-  cursor: pointer;
-  margin: 16px;
-}
-</style>
 ```
+
 
 ## props
 

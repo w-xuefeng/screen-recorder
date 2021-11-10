@@ -35,7 +35,7 @@ const App: React.FC<IAppProps> = (props) => {
 export default App
 ```
 
-- 2 . Enable privew and customize some information
+- 2 . Enable preview and customize some information
 
 ```tsx
 import React from 'react'
