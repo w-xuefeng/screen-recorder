@@ -16,6 +16,11 @@ const start = (startEvent: Function) => {
 };
 
 const recordingEnd = (url: string) => {
+  console.log(url);
+  // to do sth for url
+};
+
+const customRecordingEnd = (url: string) => {
   recording.value = false;
   console.log(url);
   // to do sth for url
@@ -40,7 +45,7 @@ const recordingEnd = (url: string) => {
     preview
     short-key="Alt+Shift+R"
     :video-options="videoOptions"
-    @recording-end="recordingEnd"
+    @recording-end="customRecordingEnd"
   >
     <template v-slot:start="{ startEvent }">
       <button v-if="!recording" @click="start(startEvent)">开始录屏</button>

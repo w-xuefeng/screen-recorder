@@ -1,6 +1,7 @@
 import React from "react";
 import { ScreenRecorder, IScreenRecorderOptions, safeCallback } from 'screen-recorder-base';
 import bindkey from '@w-xuefeng/bindkey';
+import useDraggable from 'use-draggable-hook';
 
 export interface IScreenRecorderComponentProps {
   shortKey?: string;
@@ -52,7 +53,9 @@ const defaultPreviewStyle: React.CSSProperties = {
   position: 'fixed',
   border: '1px solid #666',
   zIndex: 9999,
-  cursor: 'move'
+  cursor: 'move',
+  top: 5,
+  right: 5
 }
 
 const rShow = (c: boolean, styles?: React.CSSProperties): React.CSSProperties => (
@@ -111,6 +114,7 @@ const ScreenRecorderComponent: React.FC<IScreenRecorderComponentProps> = (props)
   const [state, dispatch] = React.useReducer(reducer, initState)
   const previewRef = React.useRef<HTMLVideoElement | null>(null)
   const previewDefaultWidth = 300;
+  const { target: previewRefTarget } = useDraggable<HTMLDivElement>()
   const setState = (payload: Partial<IScreenRecorderComponentStates>) => dispatch({
     type: 'setState',
     payload
@@ -211,13 +215,17 @@ const ScreenRecorderComponent: React.FC<IScreenRecorderComponentProps> = (props)
       {
         AorB(
           preview && !previewContent,
-          <video
-            ref={previewRef}
-            muted
-            autoPlay
-            width={previewDefaultWidth}
+          <div
+            ref={previewRefTarget}
             style={rShow(state.recording, { ...defaultPreviewStyle })}
-          ></video>,
+          >
+            <video
+              ref={previewRef}
+              muted
+              autoPlay
+              width={previewDefaultWidth}
+            ></video>
+          </div>,
           AorB(
             !!(preview && state.recording && state.screenRecorder),
             state.screenRecorder

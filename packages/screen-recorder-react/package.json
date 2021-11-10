@@ -2,6 +2,8 @@
   "name": "screen-recorder-react",
   "version": "0.0.4",
   "scripts": {
+    "predev": "lerna run build --scope screen-recorder-base",
+    "prebuild": "lerna run build --scope screen-recorder-base",
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview"
@@ -10,7 +12,8 @@
     "@w-xuefeng/bindkey": "^1.0.1",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
-    "screen-recorder-base": "^0.0.4"
+    "screen-recorder-base": "^0.0.4",
+    "use-draggable-hook": "^0.1.2"
   },
   "devDependencies": {
     "@types/react": "^17.0.0",

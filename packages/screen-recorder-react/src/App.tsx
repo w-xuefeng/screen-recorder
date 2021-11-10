@@ -19,6 +19,11 @@ export default () => {
   };
 
   const recordingEnd = (url: string) => {
+    console.log(url);
+    // to do sth for url
+  }
+
+  const customRecordingEnd = (url: string) => {
     setRecording(false);
     console.log(url);
     // to do sth for url
@@ -53,7 +58,7 @@ export default () => {
         preview
         shortKey="Alt+Shift+R"
         videoOptions={videoOptions}
-        onRecordingEnd={recordingEnd}
+        onRecordingEnd={customRecordingEnd}
         startContent={startContent}
         endContent={endContent}
         previewContent={previewContent}
