@@ -163,7 +163,7 @@ const recordingEnd = (url: string) => {
 
 ## slots
 
-| slotsName | paramList and Type                           | desc                                                                                                                                                    |
+| slotsName | paramList and type                           | desc                                                                                                                                                    |
 | --------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `start`   | { startEvent: Function, endEvent: Function } | Customize the view that triggers the start screen recording event；<br/>`startEvent `: start screen recording,<br/> ` endEvent `: end screen recording  |
 | `end`     | { endEvent: Function, startEvent: Function } | Customize the view that triggers the end screen recording event;<br/> ` endEvent `: end screen recording, <br/>`startEvent `: start screen recording    |
