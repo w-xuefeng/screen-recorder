@@ -16,7 +16,7 @@ npm install screen-recorder-react --save
 
 ```tsx
 import React from 'react'
-import ScreenRecorder, { Video } from 'screen-recorder-react'
+import ScreenRecorder from 'screen-recorder-react'
 
 interface IAppProps {
   // ...
@@ -39,7 +39,7 @@ export default App
 
 ```tsx
 import React from 'react'
-import ScreenRecorder, { Video } from 'screen-recorder-react'
+import ScreenRecorder from 'screen-recorder-react'
 
 interface IAppProps {
   // ...
@@ -76,7 +76,7 @@ export default App
 
 ```tsx
 import React from 'react'
-import ScreenRecorder, { Video } from 'screen-recorder-react'
+import ScreenRecorder from 'screen-recorder-react'
 
 interface IAppProps {
   // ...
