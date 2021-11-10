@@ -1,5 +1,6 @@
 import React from "react";
 import { ScreenRecorder, IScreenRecorderOptions, safeCallback } from 'screen-recorder-base';
+import bindkey from '@w-xuefeng/bindkey';
 
 export interface IScreenRecorderComponentProps {
   shortKey?: string;
@@ -47,7 +48,21 @@ const defaultBtnStyle: React.CSSProperties = {
   color: 'rgb(80, 86, 94)',
 }
 
-const AorB = (c: boolean, A: React.ReactNode, B: React.ReactNode) => c ? A : B
+const defaultPreviewStyle: React.CSSProperties = {
+  position: 'fixed',
+  border: '1px solid #666',
+  zIndex: 9999,
+  cursor: 'move'
+}
+
+const rShow = (c: boolean, styles?: React.CSSProperties): React.CSSProperties => (
+  {
+    ...styles,
+    ...(c ? {} : { display: 'none' })
+  }
+)
+
+const AorB = (c: boolean, A: React.ReactNode, B: React.ReactNode = null) => c ? A : B
 
 const initState: IScreenRecorderComponentStates = {
   error: false,
@@ -92,16 +107,126 @@ const ScreenRecorderComponent: React.FC<IScreenRecorderComponentProps> = (props)
     onRecordingUnsupport,
     onRecordingError,
   } = props
+
   const [state, dispatch] = React.useReducer(reducer, initState)
+  const previewRef = React.useRef<HTMLVideoElement | null>(null)
+  const previewDefaultWidth = 300;
+  const setState = (payload: Partial<IScreenRecorderComponentStates>) => dispatch({
+    type: 'setState',
+    payload
+  })
 
+  const initPreview = (mediaStream: MediaStream) => {
+    if (!preview || !previewRef.current) return;
+    previewRef.current.srcObject = mediaStream;
+    previewRef.current.load();
+  };
 
+  const options: IScreenRecorderOptions = {
+    onUnsupported: () => {
+      setState({
+        unsupported: true,
+        recording: false,
+        error: false
+      })
+      safeCallback(onRecordingUnsupport);
+    },
+    onRecordStart: (mediaStream: MediaStream) => {
+      setState({
+        recording: true,
+        error: false
+      })
+      initPreview(mediaStream);
+      safeCallback(onRecordingStart, mediaStream);
+    },
+    onError: (err) => {
+      setState({
+        error: true,
+        recording: false
+      })
+      safeCallback(onRecordingError, err);
+    },
+    onRecordEnd: (blobUrl: string, fixedBlob: Blob) => {
+      setState({
+        recording: false,
+        error: false
+      })
+      safeCallback(onRecordingEnd, blobUrl, fixedBlob);
+    },
+    timeSlice: 1000,
+    videoOptions,
+  };
 
+  React.useEffect(() => {
+    setState({ screenRecorder: ScreenRecorder.createSR(options) })
+    if (shortKey && shortKey.toUpperCase() !== 'ESC') {
+      bindkey.add(shortKey, start);
+      bindkey.add('ESC', end);
+    }
+    return () => {
+      shortKey && (bindkey.remove(shortKey), bindkey.remove('ESC'))
+    }
+  }, [])
 
+  const start = () => {
+    state.screenRecorder?.startRecording();
+  };
+
+  const end = () => {
+    state.screenRecorder?.stopRecording();
+  };
 
   return (
     <div>
-      {}
-    </div>
+      {
+        AorB(
+          !startContent && !state.recording,
+          <button
+            onClick={start}
+            style={{ ...defaultBtnStyle, ...startBtnStyle }}
+          >
+            {startBtnText}
+          </button>,
+          AorB(
+            !state.recording,
+            safeCallback(startContent, start, end)
+          )
+        )
+      }
+      {
+        AorB(
+          !endContent && state.recording,
+          <button
+            onClick={end}
+            style={{ ...defaultBtnStyle, ...endBtnStyle }}
+          >
+            {endBtnText}
+          </button>,
+          AorB(
+            state.recording,
+            safeCallback(endContent, end, start)
+          )
+        )
+      }
+      {
+        AorB(
+          preview && !previewContent,
+          <video
+            ref={previewRef}
+            muted
+            autoPlay
+            width={previewDefaultWidth}
+            style={rShow(state.recording, { ...defaultPreviewStyle })}
+          ></video>,
+          AorB(
+            !!(preview && state.recording && state.screenRecorder),
+            state.screenRecorder
+              ? safeCallback<[MediaStream], React.ReactNode>(previewContent, state.screenRecorder!.mediaStream!)
+              : null
+          )
+        )
+      }
+    </div >
   );
 }
 
