@@ -103,8 +103,8 @@ button {
 
 ## slots
 
-| slotsName | paramList | desc |
+| slotsName | paramList and Type | desc |
 | - | - | - |
-| `start` | { startEvent } | trigger the event of starting screen recording |
-| `end` | { endEvent } | trigger the event of ending screen recording |
-| `preview` | { mediaStream } | customize video preview |
+| `start` | { startEvent: Function, endEvent: Function } | Customize the view that triggers the start screen recording event；<br/>`startEvent `: start screen recording,<br/> ` endEvent `: end screen recording |
+| `end` | { endEvent: Function, startEvent: Function } | Customize the view that triggers the end screen recording event;<br/> ` endEvent `: end screen recording, <br/>`startEvent `: start screen recording |
+| `preview` | { mediaStream: MediaStream } | Customize video preview,<br/>`mediaStream`: it is the captured screen media stream, which can be assigned to the scrobject of video to preview and play |

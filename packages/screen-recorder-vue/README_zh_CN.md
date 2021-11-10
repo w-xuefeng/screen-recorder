@@ -103,8 +103,8 @@ button {
 
 ## slots
 
-| 插槽名称 | 参数列表 | 描述 |
+| 插槽名称 | 参数列表及类型签名 | 描述 |
 | - | - | - |
-| `start` | { startEvent } | 触发开始录屏的事件 |
-| `end` | { endEvent } | 触发结束录屏的事件 |
-| `preview` | { mediaStream } | 自定义 video 预览视图 |
+| `start` | { startEvent: Function, endEvent: Function } | 自定义触发开始录屏事件的视图; <br/>`startEvent`：开始录屏，<br/>`endEvent`：结束录屏 |
+| `end` | { endEvent: Function, startEvent: Function } | 自定义触发结束录屏事件的视图; <br/>`endEvent`：结束录屏，<br/>`startEvent`：开始录屏  |
+| `preview` | { mediaStream：MediaStream } | 自定义 video 预览视图; <br/>`mediaStream`: 捕获的屏幕媒体流，可赋值给 video 的 scrObject 实现播放预览 |
