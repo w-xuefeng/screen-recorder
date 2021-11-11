@@ -9,6 +9,12 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
+  "exports": {
+    ".": {
+      "import": "./src/app/screen-recorder/screen-recorder.module.ts",
+      "require": "./src/app/screen-recorder/screen-recorder.module.ts"
+    }
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~13.0.0",
