@@ -1,1 +1,29 @@
-<p>screen-recorder works!</p>
+<button *ngIf="(!startContent || !startContent.templateRef) && !state.recording" (click)="start()"
+  [style]="defaultBtnStyle + startBtnStyle">
+  {{ startBtnText }}
+</button>
+
+<div *ngIf="startContent && startContent.templateRef && !state.recording">
+  <ng-container [ngTemplateOutlet]="startContent.templateRef" [ngTemplateOutletContext]="startContext">
+  </ng-container>
+</div>
+
+<button *ngIf="(!endContent  || !endContent.templateRef)&& state.recording" (click)="end()"
+  [style]="defaultBtnStyle + endBtnStyle">
+  {{ endBtnText }}
+</button>
+
+<div *ngIf="endContent && endContent.templateRef && state.recording">
+  <ng-container [ngTemplateOutlet]="endContent.templateRef" [ngTemplateOutletContext]="endContext">
+  </ng-container>
+</div>
+
+<video *ngIf="(!previewContent || !previewContent.templateRef) && preview && state.recording"
+  [srcObject]="previewMediaStream" muted autoplay draggable [width]="previewDefaultWidth"
+  style="position: fixed; border: 1px solid #666; z-index: 9999; cursor: move; right: 5px; top: 5px;">
+</video>
+
+<div *ngIf="previewContent && previewContent.templateRef && preview && state.recording && state.screenRecorder">
+  <ng-container [ngTemplateOutlet]="previewContent.templateRef" [ngTemplateOutletContext]="previewContext">
+  </ng-container>
+</div>
