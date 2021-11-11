@@ -15,7 +15,6 @@
       "require": "./src/app/screen-recorder/screen-recorder.module.ts"
     }
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "~13.0.0",
     "@angular/common": "~13.0.0",
