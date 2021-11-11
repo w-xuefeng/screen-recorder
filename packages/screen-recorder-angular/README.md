@@ -14,157 +14,228 @@ npm install screen-recorder-angular --save
 
 - 1 . Simple use
 
-```tsx
-import React from 'react'
-import ScreenRecorder from 'screen-recorder-react'
+  - in app.module.ts
 
-interface IAppProps {
-  // ...
-}
+  ```ts
+  import { ScreenRecorderModule } from 'screen-recorder-angular';
 
-const App: React.FC<IAppProps> = (props) => {
-  // Your other logic code...
-  return (
-    <div>
-      { /** Your other components... **/ }
-      <ScreenRecorder />
-    </div>
-  )
-}
+  @NgModule({
+    // ...
+    imports: [
+      // ...
+      ScreenRecorderModule
+    ]
+  })
+  ```
+  - in app.component.html
 
-export default App
-```
+  ```html
+    <!-- your ohter content -->
+    <app-screen-recorder></app-screen-recorder>
+    <!-- your ohter content -->
+  ```
 
 - 2 . Enable preview and customize some information
 
-```tsx
-import React from 'react'
-import ScreenRecorder from 'screen-recorder-react'
+  - in app.module.ts
 
-interface IAppProps {
-  // ...
-}
+  ```ts
+  import { ScreenRecorderModule } from 'screen-recorder-angular';
 
-const videoOptions: MediaTrackConstraints = {
-  width: 1920,
-  height: 1080,
-  frameRate: 60,
-};
+  @NgModule({
+    // ...
+    imports: [
+      // ...
+      ScreenRecorderModule
+    ]
+  })
+  ```
+  - in app.component.ts
 
-const App: React.FC<IAppProps> = (props) => {
-  // Your other logic code...
-  return (
-    <div>
-      { /** your other components... **/ }
-      <ScreenRecorder
-        preview
-        shortKey="Alt+Shift+R"
-        startBtnText="🛫 start"
-        startBtnStyle={{ color: '#48bfa7' }}
-        endBtnText="🛑 end"
-        endBtnStyle={{ color: 'red' }}
-        videoOptions={videoOptions}
-      />
-    </div>
-  )
-}
+  ```ts
+  import { Component } from '@angular/core';
 
-export default App
-```
+  @Component({
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
+  })
+  export class AppComponent {
+
+    // your other content...
+
+    videoOptions: MediaTrackConstraints = {
+      width: 1920,
+      height: 1080,
+      frameRate: 60,
+    };    
+  }
+  
+  ```
+
+  - in app.component.html
+
+  ```html
+    <!-- your ohter content -->
+    <app-screen-recorder
+      [preview]="true"
+      shortKey="Alt+Shift+R"
+      startBtnText="🛫 开始"
+      startBtnStyle="color:#48bfa7"
+      endBtnText="🛑 结束"
+      endBtnStyle="color: red"
+      [videoOptions]="videoOptions"
+    >
+    </app-screen-recorder>
+    <!-- your ohter content -->
+  ```
+
 
 - 3 . Listening event callback
 
-```tsx
-import React from 'react'
-import ScreenRecorder from 'screen-recorder-react'
+  - in app.module.ts
 
-interface IAppProps {
-  // ...
-}
+  ```ts
+  import { ScreenRecorderModule } from 'screen-recorder-angular';
 
-const App: React.FC<IAppProps> = (props) => {
+  @NgModule({
+    // ...
+    imports: [
+      // ...
+      ScreenRecorderModule
+    ]
+  })
+  ```
+  - in app.component.ts
+
+  ```ts
+  import { Component } from '@angular/core';
+
+  @Component({
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
+  })
+  export class AppComponent {
+
+    // your other content...
+
+    onStart = (event: { mediaStream: MediaStream }) => {
+      /** Your logic code **/
+    }
+
+    onError = (event: { err: unknown }) => {
+      /** Your logic code **/
+    }
+
+    onUnsupport = () => {
+      /** Your logic code **/
+    }
+    
+    onEnd = (event: { url: string, blob: Blob }) => {
+      /** Your logic code **/
+    }
+  }
   
-  const onStart = (mediaStream: MediaStream) => {
-    /** Your logic code **/
-  }
-  const onError = (err: unknown) => {
-    /** Your logic code **/
-  }
-  const onUnsupport = () => {
-    /** Your logic code **/
-  }
-  const onEnd = (blobUrl: string, blob: Blob) => {
-    /** Your logic code **/
-  }
+  ```
 
-  return (
-    <div>
-      { /** your other components... **/ }
-      <ScreenRecorder
-        preview
-        onRecordingStart={onStart}
-        onRecordingEnd={onEnd}
-        onRecordingUnsupport={onUnsupport}
-        onRecordingError={onError}
-      />
-    </div>
-  )
-}
+  - in app.component.html
 
-export default App
-```
+  ```html
+    <!-- your other content -->
+    <app-screen-recorder
+      [preview]="true"
+      (onRecordingStart)="onStart($event)"
+      (onRecordingEnd)="onEnd($event)"
+      (onRecordingUnsupport)="onUnsupport()"
+      (onRecordingError)="onError($event)"
+    >
+    </app-screen-recorder>
+    <!-- your other content -->
+  ```
 
 - 4 . Custom view
 
-```tsx
-import React from 'react'
-import ScreenRecorder, { Video } from 'screen-recorder-react'
+  - in app.module.ts
 
-interface IAppProps {
-  // ...
-}
+  ```ts
+  import { ScreenRecorderModule } from 'screen-recorder-angular';
 
-const startContent = (startEvent: Function) => {
-  /** Your other logic code... **/
-  return <button onClick={() => start(startEvent)}>start</button>
-}
+  @NgModule({
+    // ...
+    imports: [
+      // ...
+      ScreenRecorderModule
+    ]
+  })
+  ```
+  - in app.component.ts
 
-const endContent = (endEvent: Function) => {
-  /** Your other logic code... **/
-  return <button onClick={() => endEvent()}>end</button>
-}
+  ```ts
+  import { Component } from '@angular/core';
 
-const previewContent = (mediaStream: MediaStream) => {
-  /** Your other logic code... **/
-  return (
-  <Video
-    muted
-    autoPlay
-    style={{ display: 'block' }}
-    width={500}
-    srcObject={mediaStream}
-  />
-  )
-}
+  @Component({
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
+  })
+  export class AppComponent {
 
-const App: React.FC<IAppProps> = (props) => {
-  /** Your logic code... **/
-  return (
-    <div>
-      { /** your other components... **/ }
-      <ScreenRecorder
-        preview
-        startContent={startContent}
-        endContent={endContent}
-        previewContent={previewContent}
-      />
-    </div>
-  )
-}
+    // your other content...
 
-export default App
-```
+    recording = false
 
+    start = (startEvent: Function) => {
+      startEvent();
+      this.recording = true;
+    };
+
+    customRecordingEnd = ({ url }: { url: string }) => {
+      this.recording = false;
+      console.log(url);
+      // to do sth for url
+    };  
+  }
+  
+  ```
+
+  - in app.component.html
+
+  ```html
+    <!-- your ohter content -->
+    <app-screen-recorder
+      [preview]="true"
+      (onRecordingEnd)="customRecordingEnd($event)"
+    >
+      <ng-template startContent let-startEvent="startEvent">
+        <!-- your custom view for startContent -->
+        <button *ngIf="!recording" (click)="start(startEvent)">
+          开始录屏
+        </button>
+      </ng-template>
+
+      <ng-template endContent let-endEvent="endEvent">
+        <!-- your custom view for endContent -->
+        <button *ngIf="recording" (click)="endEvent()">
+          结束录屏
+        </button>
+      </ng-template>
+
+      <ng-template previewContent let-mediaStream="mediaStream">
+        <!-- your custom view for previewContent -->
+        <video
+          muted
+          autoplay
+          width="500"
+          style="display: block;"
+          [srcObject]="mediaStream"
+        >
+        </video>
+      </ng-template>
+
+    </app-screen-recorder>
+    <!-- your ohter content -->
+  ```
 
 ## props
 
@@ -182,15 +253,15 @@ export default App
 
 | eventsName             | paramList                           | desc                     |
 | ---------------------- | ----------------------------------- | ------------------------ |
-| `onRecordingStart`     | [ `mediaStream`: MediaStream ]      | recorder start           |
-| `onRecordingEnd`       | [ `blobUrl`: string, `blob`: Blob ] | recorder end             |
-| `onRecordingUnsupport` | []                                  | recorder API unsupported |
-| `onRecordingError`     | [ `err`: unknown ]                  | recorder error           |
+| `onRecordingStart`     | { `mediaStream`: MediaStream }     | recorder start           |
+| `onRecordingEnd`       | { `blobUrl`: string, `blob`: Blob } | recorder end             |
+| `onRecordingUnsupport` |  void                                 | recorder API unsupported |
+| `onRecordingError`     | { `err`: unknown }                  | recorder error           |
 
-## slot-props
+## projection
 
-| slotPropsName    | type                                                          | desc                                                                                                                                                    |
+| projection-selector    | context-parameter-list                                                          | desc                                                                                                                                                    |
 | ---------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `startContent`   | (startEvent: Function, endEvent: Function) => React.ReactNode | Customize the view that triggers the start screen recording event；<br/>`startEvent `: start screen recording,<br/> ` endEvent `: end screen recording  |
-| `endContent`     | (endEvent: Function, startEvent: Function) => React.ReactNode | Customize the view that triggers the end screen recording event;<br/> ` endEvent `: end screen recording, <br/>`startEvent `: start screen recording    |
-| `previewContent` | (mediaStream: MediaStream) => React.ReactNode                 | Customize video preview,<br/>`mediaStream`: it is the captured screen media stream, which can be assigned to the scrobject of video to preview and play |
+| `startContent`   | { startEvent: Function, endEvent: Function } | Customize the view that triggers the start screen recording event；<br/>`startEvent `: start screen recording,<br/> ` endEvent `: end screen recording  |
+| `endContent`     | { endEvent: Function, startEvent: Function } | Customize the view that triggers the end screen recording event;<br/> ` endEvent `: end screen recording, <br/>`startEvent `: start screen recording    |
+| `previewContent` | { mediaStream: MediaStream } | Customize video preview,<br/>`mediaStream`: it is the captured screen media stream, which can be assigned to the scrobject of video to preview and play |
