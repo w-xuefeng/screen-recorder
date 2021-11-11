@@ -61,6 +61,7 @@ export default class ScreenRecorderProps {
 
   initPreview = (mediaStream: MediaStream) => {
     this.previewMediaStream = mediaStream
+    this.previewContext = { mediaStream }
   }
 
   start = () => {

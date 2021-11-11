@@ -1,1 +1,19 @@
-<app-screen-recorder [preview]="true"></app-screen-recorder>
+<h1>1. Simple use</h1>
+<app-screen-recorder [preview]="true" (onRecordingEnd)="recordingEnd($event)" startBtnText="🛫 开始"
+  startBtnStyle="color:#48bfa7" endBtnText="🛑 结束" endBtnStyle="color: red"></app-screen-recorder>
+
+<hr style="margin: 50px 0" />
+
+<h1>2. Custom slots use</h1>
+<app-screen-recorder [preview]="true" shortKey="Alt+Shift+R" [videoOptions]="videoOptions"
+  (onRecordingEnd)="customRecordingEnd($event)">
+  <ng-template startContent let-startEvent="startEvent">
+    <button *ngIf="!recording" (click)="start(startEvent)">开始录屏</button>
+  </ng-template>
+  <ng-template endContent let-endEvent="endEvent">
+    <button *ngIf="recording" (click)="endEvent()">结束录屏</button>
+  </ng-template>
+  <ng-template previewContent let-mediaStream="mediaStream">
+    <video muted autoplay width="500" style="display: block;" [srcObject]="mediaStream"></video>
+  </ng-template>
+</app-screen-recorder>

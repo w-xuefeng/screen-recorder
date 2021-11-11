@@ -49,5 +49,4 @@ export class ScreenRecorderComponent extends ScreenRecorderProps implements OnIn
       bindkey.add('ESC', this.end);
     }
   }
-
 }
