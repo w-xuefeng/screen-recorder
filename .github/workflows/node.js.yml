@@ -35,9 +35,9 @@ jobs:
           mkdir ng
           mkdir react
           mkdir vue
-          cp -r ../packages/screen-recorder-angular/dist ./ng
-          cp -r ../packages/screen-recorder-react/dist ./react
-          cp -r ../packages/screen-recorder-vue/dist ./vue
+          cp -r ../packages/screen-recorder-angular/dist/ ./ng/
+          cp -r ../packages/screen-recorder-react/dist/ ./react/
+          cp -r ../packages/screen-recorder-vue/dist/ ./vue/
           cp ../index.html ./index.html
           cp ../README_PAGES.md ./README.md
           git add .
