@@ -39,6 +39,7 @@ jobs:
           cp -r ../packages/screen-recorder-react/dist ./react
           cp -r ../packages/screen-recorder-vue/dist ./vue
           cp ../index.html ./index.html
-          git add ./index.html ./ng ./react ./vue
+          cp ../README_PAGES.md ./README.md
+          git add .
           git commit -am "Feat: Github Action Auto Build"
           git push --force --quiet https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} master:gh-pages
