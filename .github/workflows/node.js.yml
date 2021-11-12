@@ -27,18 +27,18 @@ jobs:
           yarn build:a
       - name: 5. deploy 'dist files'
         run: |
+          mkdir publish
+          cd publish
           git init
           git config user.name "XueFLY"
-          git config user.email "xuefeng@kcalb.wang"
-          rm -rf ./ng
-          rm -rf ./react
-          rm -rf ./vue
+          git config user.email "xuefeng@kcalb.wang"   
           mkdir ng
           mkdir react
           mkdir vue
-          cp -r ./packages/screen-recorder-angular/dist/ ./ng
-          cp -r ./packages/screen-recorder-react/dist/ ./react
-          cp -r ./packages/screen-recorder-vue/dist/ ./vue
+          cp -r ../packages/screen-recorder-angular/dist/ ./ng/
+          cp -r ../packages/screen-recorder-react/dist/ ./react/
+          cp -r ../packages/screen-recorder-vue/dist/ ./vue/
+          cp ../index.html ./index.html
           git add ./index.html ./ng ./react ./vue
           git commit -am "Feat: Github Action Auto Build"
           git push --force --quiet https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} main:gh-pages
