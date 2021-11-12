@@ -15,7 +15,7 @@
     "predev": "lerna run build --scope screen-recorder-base",
     "prebuild": "lerna run build --scope screen-recorder-base",
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vite build",
     "serve": "vite preview"
   },
   "dependencies": {
