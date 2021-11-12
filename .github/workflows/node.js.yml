@@ -35,10 +35,10 @@ jobs:
           mkdir ng
           mkdir react
           mkdir vue
-          cp -r ../packages/screen-recorder-angular/dist/ ./ng/
-          cp -r ../packages/screen-recorder-react/dist/ ./react/
-          cp -r ../packages/screen-recorder-vue/dist/ ./vue/
+          cp -r ../packages/screen-recorder-angular/dist ./ng
+          cp -r ../packages/screen-recorder-react/dist ./react
+          cp -r ../packages/screen-recorder-vue/dist ./vue
           cp ../index.html ./index.html
           git add ./index.html ./ng ./react ./vue
           git commit -am "Feat: Github Action Auto Build"
-          git push --force --quiet https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} main:gh-pages
+          git push --force --quiet https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} master:gh-pages
