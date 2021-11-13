@@ -1,7 +1,7 @@
 import React from "react";
 import { ScreenRecorder, IScreenRecorderOptions, safeCallback } from 'screen-recorder-base';
 import bindkey from '@w-xuefeng/bindkey';
-import useDraggable from 'use-draggable-hook';
+import Video from './Video';
 
 export interface IScreenRecorderComponentProps {
   shortKey?: string;
@@ -24,7 +24,7 @@ export interface IScreenRecorderComponentStates {
   error: boolean
   unsupported: boolean
   recording: boolean
-  screenRecorder: ScreenRecorder | null
+  previewMediaStream: null | MediaStream
 }
 
 const defaultBtnStyle: React.CSSProperties = {
@@ -71,7 +71,7 @@ const initState: IScreenRecorderComponentStates = {
   error: false,
   unsupported: false,
   recording: false,
-  screenRecorder: null,
+  previewMediaStream: null,
 }
 
 const handleAction = {
@@ -111,20 +111,17 @@ const ScreenRecorderComponent: React.FC<IScreenRecorderComponentProps> = (props)
     onRecordingError,
   } = props
 
+
   const [state, dispatch] = React.useReducer(reducer, initState)
-  const previewRef = React.useRef<HTMLVideoElement | null>(null)
+
   const previewDefaultWidth = 300;
-  const { target: previewRefTarget } = useDraggable<HTMLDivElement>()
+
   const setState = (payload: Partial<IScreenRecorderComponentStates>) => dispatch({
     type: 'setState',
     payload
   })
 
-  const initPreview = (mediaStream: MediaStream) => {
-    if (!preview || !previewRef.current) return;
-    previewRef.current.srcObject = mediaStream;
-    previewRef.current.load();
-  };
+  const initPreview = (mediaStream: MediaStream) => setState({ previewMediaStream: mediaStream })
 
   const options: IScreenRecorderOptions = {
     onUnsupported: () => {
@@ -161,23 +158,43 @@ const ScreenRecorderComponent: React.FC<IScreenRecorderComponentProps> = (props)
     videoOptions,
   };
 
-  React.useEffect(() => {
-    setState({ screenRecorder: ScreenRecorder.createSR(options) })
+  const screenRecorder = React.useRef(ScreenRecorder.createSR(options))
+
+  const bindShortKey = () => {
     if (shortKey && shortKey.toUpperCase() !== 'ESC') {
-      bindkey.add(shortKey, start);
-      bindkey.add('ESC', end);
+      bindkey.add(shortKey, start, { target: globalThis });
+      bindkey.add('ESC', end, { target: globalThis });
+      console.info(`[BindKey] ${shortKey} to start`)
+      console.info(`[BindKey] ESC to end`)
     }
+  }
+
+  const removeShortKey = () => {
+    shortKey && (bindkey.remove(shortKey), bindkey.remove('ESC'))
+    console.info(`[RemoveKey] ${shortKey}`)
+    console.info(`[RemoveKey] ESC`)
+  }
+
+  React.useEffect(() => {
+    state.recording &&
+      screenRecorder.current &&
+      screenRecorder.current.mediaStream &&
+      initPreview(screenRecorder.current.mediaStream)
+  }, [preview])
+
+  React.useEffect(() => {
+    bindShortKey()
     return () => {
-      shortKey && (bindkey.remove(shortKey), bindkey.remove('ESC'))
+      removeShortKey()
     }
-  }, [])
+  }, [shortKey])
 
   const start = () => {
-    state.screenRecorder?.startRecording();
+    screenRecorder.current?.startRecording();
   };
 
   const end = () => {
-    state.screenRecorder?.stopRecording();
+    screenRecorder.current?.stopRecording();
   };
 
   return (
@@ -215,21 +232,18 @@ const ScreenRecorderComponent: React.FC<IScreenRecorderComponentProps> = (props)
       {
         AorB(
           preview && !previewContent,
-          <div
-            ref={previewRefTarget}
-            style={rShow(state.recording, { ...defaultPreviewStyle })}
-          >
-            <video
-              ref={previewRef}
-              muted
-              autoPlay
-              width={previewDefaultWidth}
-            ></video>
-          </div>,
+          <Video
+            draggable
+            muted
+            autoPlay
+            width={previewDefaultWidth}
+            srcObject={state.previewMediaStream}
+            dragWrapStyle={rShow(state.recording, { ...defaultPreviewStyle })}
+          ></Video>,
           AorB(
-            !!(preview && state.recording && state.screenRecorder),
-            state.screenRecorder
-              ? safeCallback<[MediaStream], React.ReactNode>(previewContent, state.screenRecorder!.mediaStream!)
+            !!(preview && state.recording && screenRecorder.current),
+            screenRecorder.current
+              ? safeCallback<[MediaStream], React.ReactNode>(previewContent, screenRecorder.current?.mediaStream!)
               : null
           )
         )
