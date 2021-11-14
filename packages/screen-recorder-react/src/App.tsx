@@ -1,9 +1,8 @@
 import React from 'react'
 import { Card, Switch, Row, Col, Select, Input } from 'antd';
-import ScreenRecorder, { safeCallback } from 'screen-recorder-react'
-import Video from './components/Video'
+import ScreenRecorder, { Video, safeCallback } from 'screen-recorder-react';
 import 'antd/dist/antd.css';
-import './App.css'
+import './App.css';
 
 interface IAppStates {
   shortKey?: string;
