@@ -1,6 +1,6 @@
 {
   "name": "screen-recorder-react",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "scripts": {
     "predev": "lerna run build --scope screen-recorder-base",
     "prebuild": "lerna run build --scope screen-recorder-base",
