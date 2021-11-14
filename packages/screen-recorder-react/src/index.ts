@@ -1,4 +1,5 @@
-import ScreenRecorderVue from './components/ScreenRecorder';
-export { default as ScreenRecorderVue } from './components/ScreenRecorder';
+import ScreenRecorderReact from './components/ScreenRecorder';
+export { default as ScreenRecorderReact } from './components/ScreenRecorder';
 export { default as Video } from './components/Video';
-export default ScreenRecorderVue
+export { safeCallback } from 'screen-recorder-base';
+export default ScreenRecorderReact

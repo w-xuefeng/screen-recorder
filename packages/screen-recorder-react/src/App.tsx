@@ -1,7 +1,6 @@
 import React from 'react'
 import { Card, Switch, Row, Col, Select, Input } from 'antd';
-import ScreenRecorder from './components/ScreenRecorder'
-import { safeCallback } from 'screen-recorder-base';
+import ScreenRecorder, { safeCallback } from 'screen-recorder-react'
 import Video from './components/Video'
 import 'antd/dist/antd.css';
 import './App.css'

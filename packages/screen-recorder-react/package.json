@@ -8,9 +8,6 @@
     "build": "tsc && vite build",
     "serve": "vite preview"
   },
-  "main": "src/index.ts",
-  "module": "src/index.ts",
-  "types": "src/index.ts",
   "exports": {
     ".": {
       "import": "./src/index.ts",
