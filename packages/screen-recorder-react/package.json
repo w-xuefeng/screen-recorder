@@ -1,6 +1,6 @@
 {
   "name": "screen-recorder-react",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "scripts": {
     "predev": "lerna run build --scope screen-recorder-base",
     "prebuild": "lerna run build --scope screen-recorder-base",
@@ -8,6 +8,7 @@
     "build": "tsc && vite build",
     "serve": "vite preview"
   },
+  "types": "./src/index.ts",
   "exports": {
     ".": {
       "import": "./src/index.ts",
@@ -19,7 +20,7 @@
     "@w-xuefeng/bindkey": "^1.0.1",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
-    "screen-recorder-base": "^0.0.5",
+    "screen-recorder-base": "^0.0.6",
     "use-draggable-hook": "^0.1.2"
   },
   "devDependencies": {
