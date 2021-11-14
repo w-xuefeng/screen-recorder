@@ -1,6 +1,6 @@
 {
   "name": "screen-recorder-base",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "screen-recorder-base",
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -16,7 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/recordrtc": "^5.6.8",
-    "fix-webm-metainfo": "git+https://github.com/w-xuefeng/fix-webm-meta.git",
+    "@w-xuefeng/fix-webm-metainfo": "^1.0.7",
     "recordrtc": "^5.6.2"
   },
   "devDependencies": {

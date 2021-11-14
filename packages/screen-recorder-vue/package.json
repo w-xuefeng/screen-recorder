@@ -21,7 +21,7 @@
   "dependencies": {
     "@vueuse/core": "^6.8.0",
     "@w-xuefeng/bindkey": "^1.0.1",
-    "screen-recorder-base": "^0.0.4",
+    "screen-recorder-base": "^0.0.5",
     "vue": "^3.2.16"
   },
   "devDependencies": {

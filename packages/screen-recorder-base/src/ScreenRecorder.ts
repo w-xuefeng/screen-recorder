@@ -1,5 +1,5 @@
 import RecordRTC from 'recordrtc'
-import fixWebmMetaInfo from 'fix-webm-metainfo'
+import fixWebmMetaInfo from '@w-xuefeng/fix-webm-metainfo'
 
 export interface IScreenRecorderOptions extends RecordRTC.Options {
   onUnsupported: () => void
