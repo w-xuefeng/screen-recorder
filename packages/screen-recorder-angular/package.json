@@ -5,7 +5,7 @@
     "ng": "ng",
     "dev": "ng serve",
     "start": "ng serve",
-    "build": "ng build --output-path dist --base-href /screen-recorder/ng",
+    "build": "ng build --output-path dist --base-href ./",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
