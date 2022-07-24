@@ -1,6 +1,6 @@
 {
   "name": "screen-recorder-vue",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "src/index.ts",
   "module": "src/index.ts",
   "types": "src/index.ts",
@@ -21,7 +21,7 @@
   "dependencies": {
     "@vueuse/core": "^6.8.0",
     "@w-xuefeng/bindkey": "^1.0.1",
-    "screen-recorder-base": "^0.0.6",
+    "screen-recorder-base": "^0.0.7",
     "vue": "^3.2.16"
   },
   "devDependencies": {
