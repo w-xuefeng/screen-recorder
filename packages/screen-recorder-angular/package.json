@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "scripts": {
     "ng": "ng",
+    "predev": "lerna run build --scope screen-recorder-base",
     "dev": "ng serve",
     "start": "ng serve",
-    "build": "ng build --output-path dist --base-href ./ --deploy-url ./",
+    "build": "ng build --output-path dist --base-href ./",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -31,8 +32,8 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~13.0.1",
-    "@angular/cli": "~13.0.1",
+    "@angular-devkit/build-angular": "~13.0.4",
+    "@angular/cli": "~13.0.4",
     "@angular/compiler-cli": "~13.0.0",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
